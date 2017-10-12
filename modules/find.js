@@ -58,9 +58,14 @@ module.exports = (app, bot) => {
 				data += '<b>Кадастровый инженер:</b> ' + (res2.feature.attrs.cad_eng_data.ci_surname || '') + ' ' + res2.feature.attrs.cad_eng_data.ci_first + ' ' + (res2.feature.attrs.cad_eng_data.ci_patronymic || '') + '\r\n'
 			}
 
-			await ctx.reply(data, {parse_mode: 'HTML'});
+			await ctx.reply(data, {parse_mode: 'HTML', reply_markup: {
+				inline_keyboard: [
+					[{text: 'Показать на карте', url: 'https://pkk5.rosreestr.ru/#x=' + res2.feature.center.x + '&y=' + res2.feature.center.y + '&z=20&text=' + ctx.message.location.latitude + ',' + ctx.message.location.longitude + '&type=1&app=search&opened=1'}]
+				]
+			}});
 
 		} catch (e) {
+			console.log(e);
 			await ctx.reply('В базе нет информации по запрошенному объекту');
 		}
 		
